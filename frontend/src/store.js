@@ -1,5 +1,5 @@
 // store.js
-
+import { getLayoutedElements } from "./layout";
 import { create } from "zustand";
 import {
     addEdge,
@@ -11,6 +11,7 @@ import {
 export const useStore = create((set, get) => ({
     nodes: [],
     edges: [],
+    nodeIDs: {},
     getNodeID: (type) => {
         const newIDs = {...get().nodeIDs};
         if (newIDs[type] === undefined) {
@@ -19,6 +20,17 @@ export const useStore = create((set, get) => ({
         newIDs[type] += 1;
         set({nodeIDs: newIDs});
         return `${type}-${newIDs[type]}`;
+    },
+    autoLayout: () => {
+      const { nodes, edges } = get();
+
+      const layouted =
+        getLayoutedElements(nodes, edges);
+
+      set({
+        nodes: layouted.nodes,
+        edges: layouted.edges,
+      });
     },
     addNode: (node) => {
         set({

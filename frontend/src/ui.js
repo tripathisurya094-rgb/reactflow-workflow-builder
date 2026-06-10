@@ -16,7 +16,7 @@ import { FilterNode } from './nodes/filterNode';
 import { EmailNode } from './nodes/emailNode';
 import { MathNode } from './nodes/mathNode';
 import 'reactflow/dist/style.css';
-
+export let flowInstance = null;
 const gridSize = 20;
 const proOptions = { hideAttribution: true };
 const nodeTypes = {
@@ -145,7 +145,11 @@ export const PipelineUI = () => {
                 snapGrid={[20, 20]}
                 onDrop={onDrop}
                 onDragOver={onDragOver}
-                onInit={setReactFlowInstance}
+
+                onInit={(instance) => {
+                  setReactFlowInstance(instance);
+                  flowInstance = instance;
+                }}
                 nodeTypes={nodeTypes}
                 proOptions={proOptions}
                 snapGrid={[gridSize, gridSize]}

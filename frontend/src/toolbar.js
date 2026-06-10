@@ -1,6 +1,11 @@
 import { DraggableNode } from './draggableNode';
+import { useStore } from "./store";
 
 export const PipelineToolbar = () => {
+
+  const autoLayout =
+    useStore((state) => state.autoLayout);
+
   return (
     <div
       style={{
@@ -12,13 +17,45 @@ export const PipelineToolbar = () => {
     >
       <div
         style={{
-          fontSize: "22px",
-          fontWeight: "700",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
           marginBottom: "16px",
-          color: "#0f172a",
         }}
       >
-        Workflow Builder
+        <div
+          style={{
+            fontSize: "22px",
+            fontWeight: "700",
+            color: "#0f172a",
+          }}
+        >
+          Workflow Builder
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            gap: "10px",
+          }}
+        >
+          <button
+            onClick={autoLayout}
+            style={{
+              background: "#0f172a",
+              color: "white",
+              border: "none",
+              padding: "10px 18px",
+              borderRadius: "8px",
+              cursor: "pointer",
+              fontWeight: "600",
+            }}
+          >
+            Auto Layout
+          </button>
+
+
+        </div>
       </div>
 
       <div
