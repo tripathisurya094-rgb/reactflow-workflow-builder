@@ -1,70 +1,169 @@
-# Getting Started with Create React App
+# ReactFlow Workflow Builder
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A visual workflow builder built using ReactFlow, React, Zustand, and FastAPI.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+### Node Abstraction
 
-### `npm start`
+* Reusable BaseNode component
+* Reduced duplication across node implementations
+* Easy creation of new node types
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Custom Nodes
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+* Input Node
+* Output Node
+* Text Node
+* LLM Node
+* API Node
+* Database Node
+* Email Node
+* Filter Node
+* Math Node
 
-### `npm test`
+### Dynamic Text Node
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The Text Node supports variable parsing using:
 
-### `npm run build`
+```text
+{{variable}}
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Example:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```text
+Hello {{name}}
+Age {{age}}
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Automatically generates dynamic input handles for:
 
-### `npm run eject`
+* name
+* age
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Pipeline Analysis
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The frontend sends the pipeline structure to the backend.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+The backend returns:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+* Number of nodes
+* Number of edges
+* DAG validation result
 
-## Learn More
+### DAG Validation
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Implemented using DFS-based cycle detection.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Example:
 
-### Code Splitting
+Valid DAG:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```text
+Input → LLM → Output
+```
 
-### Analyzing the Bundle Size
+Invalid DAG:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```text
+A → B
+↑   ↓
+└───┘
+```
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Architecture
 
-### Advanced Configuration
+```text
+Frontend (React + ReactFlow)
+        |
+        | POST /pipelines/parse
+        |
+Backend (FastAPI)
+        |
+        ├── Count Nodes
+        ├── Count Edges
+        └── DAG Validation
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+## Tech Stack
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Frontend
 
-### `npm run build` fails to minify
+* React
+* ReactFlow
+* Zustand
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Backend
+
+* FastAPI
+* Pydantic
+
+---
+
+## Setup
+
+### Backend
+
+```bash
+cd backend
+
+pip install fastapi uvicorn python-multipart
+
+python3 -m uvicorn main:app --reload
+```
+
+Backend runs at:
+
+```text
+http://127.0.0.1:8000
+```
+
+---
+
+### Frontend
+
+```bash
+cd frontend
+
+npm install
+
+npm start
+```
+
+Frontend runs at:
+
+```text
+http://localhost:3000
+```
+
+---
+
+## Screenshots
+
+### Workflow Builder
+
+(Add Screenshot)
+
+### Dynamic Text Node
+
+(Add Screenshot)
+
+### Pipeline Analysis Modal
+
+(Add Screenshot)
+
+---
+
+## Future Improvements
+
+* Auto-layout using Dagre
+* Node execution engine
+* Pipeline persistence
+* Dark mode
+* Real-time collaboration
+* Deployment support

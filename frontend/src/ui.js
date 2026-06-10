@@ -1,7 +1,7 @@
 // ui.js
 // Displays the drag-and-drop UI
 // --------------------------------------------------
-
+import { SubmitButton } from './submit';
 import { useState, useRef, useCallback } from 'react';
 import ReactFlow, { Controls, Background, MiniMap } from 'reactflow';
 import { useStore } from './store';
@@ -103,6 +103,38 @@ export const PipelineUI = () => {
                                       width: '100%',
                                       height: '100%',
                                     }}>
+        {nodes.length === 0 && (
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              textAlign: "center",
+              pointerEvents: "none",
+              zIndex: 1,
+            }}
+          >
+            <div
+              style={{
+                fontSize: "42px",
+                fontWeight: "700",
+                color: "#cbd5e1",
+              }}
+            >
+              Build Your Workflow
+            </div>
+
+            <div
+              style={{
+                marginTop: "10px",
+                color: "#94a3b8",
+              }}
+            >
+              Drag nodes from the toolbar
+            </div>
+          </div>
+        )}
             <ReactFlow
                 nodes={nodes}
                 edges={edges}
